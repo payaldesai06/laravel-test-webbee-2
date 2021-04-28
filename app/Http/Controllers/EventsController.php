@@ -16,6 +16,9 @@ class EventsController extends BaseController
     }
 
     public function getFutureEventsWithWorkshops() {
-        return Event::with('workshops')->where('start','>',date('Y-m-d H:i:s'))->get()->toArray();
+        return Event::with(['workshops' => function($q) {
+            // Query the name field in status table
+            $q->where('start','>',date('Y-m-d H:i:s')); // '=' is optional
+        }])->get()->toArray();
     }
 }
